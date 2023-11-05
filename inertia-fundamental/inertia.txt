@@ -1,0 +1,99 @@
+// 01. Introduction
+
+Inertia.js is a powerful JavaScript library that bridges the gap between modern JavaScript frameworks
+like Vue.js and server-side frameworks like Laravel. 
+It is designed to simplify the development of web applications by allowing developers to build interactive 
+and data-driven user interfaces without the complexities of traditional client-side rendering (CSR) frameworks.
+
+
+// 02. Comparison of SSR and CSR:
+Server Side Rendering (SSR) involves rendering web pages on the server and sending the fully formed HTML to the client's browser.
+
+Client Side Rendering (CSR) means generating the HTML components on the browser side, 
+by executing Javascript code within the browser that manipulates the HTML DOM to build the HTML nodes.
+
+Advantages of SSR:
+1. Better SEO and page ranking
+2. Faster load time for the initial page render that a CSR App
+3. Once the web page is visible in the browser it is fully interactive
+4. webpage will display even if the browser Javascript is disabled
+
+Disadvantages of SSR:
+1. Poor responsiveness for low or no Internet connectivity
+2. For Dynamic SSR, increased server load as the web traffic increases
+
+Advantages of CSR:
+1. Extremely fast and responsive after initial load
+
+Disadvantages of CSR:
+1. Long initial load time
+2. Negative impact on SEO and page ranking
+3. User will see a blank page in case browser Javascript is disabled
+
+
+// 03. Inertia.js Features:
+
+Data-Driven UI: 
+Inertia.js allows developers to build data-driven user interfaces by making API requests to the server 
+and updating the DOM with the response. 
+For example, you can fetch data and update the UI without full page reloads.
+
+Example:
+Suppose I have a Laravel backend and I want to display a list of blog posts on the client-side. 
+With Inertia.js, my controller might look like this:
+
+public function index()
+{
+    $posts = Post::latest()->get();
+
+    return Inertia::render('Posts/Index', [
+        'posts' => $posts,
+    ]);
+}
+In my application, I can access the 'posts' data and render it in my vue component without a full page reload.
+
+
+Client-Side Routing: 
+Inertia.js enables client-side routing without the need for additional routing libraries. 
+It handles URL changes and loads the appropriate component, making the application feel like a single-page application (SPA).
+
+import { createInertiaApp } from '@inertiajs/inertia-vue3';
+
+createInertiaApp({
+    resolve: (name) => require(`./Pages/${name}`),
+    setup({ el, App, props }) {
+        new Vue({
+            render: (h) => h(App, props),
+        }).$mount(el);
+    },
+});
+Now, I can navigate between routes without full page reloads, providing a smoother user experience.
+
+Shared Controllers: 
+Inertia.js promotes code reusability by allowing you to share controllers between the server and client. 
+This means that the logic for handling a request can be reused on both sides, reducing duplication and improving consistency.
+
+Example;
+class BlogController
+{
+    public function index()
+    {
+        $posts = Post::latest()->get();
+
+        return Inertia::render('Posts/Index', [
+            'posts' => $posts,
+        ]);
+    }
+}
+This shared controller can be used on both the server side (for server-rendered pages) and client side (for handling API requests and rendering components), promoting code reusability.
+
+04. Integration with Laravel
+Tried to create a laravel-inertia project but not completed. Because I am not familiar with php/laravel 
+
+
+// 05. Client-Side Components
+
+Vue.js and Inertia.js can be used together to create client-side components in a web application. 
+Vue.js is a popular JavaScript framework for building interactive and dynamic user interfaces, 
+while Inertia.js is a library that allows you to create server-side rendered (SSR) applications with the convenience of client-side routing. 
+When used together, they offer a seamless way to build modern web applications with client-side interactivity and server-side rendering.
